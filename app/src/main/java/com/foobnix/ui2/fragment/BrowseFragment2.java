@@ -57,6 +57,9 @@ import com.foobnix.pdf.info.R;
 import com.foobnix.pdf.info.TintUtil;
 import com.foobnix.pdf.info.io.SearchCore;
 import com.foobnix.pdf.info.model.BookCSS;
+import com.foobnix.pdf.info.storage.Dropbox;
+import com.foobnix.pdf.info.storage.GDrive;
+import com.foobnix.pdf.info.storage.OneDrive;
 import com.foobnix.pdf.info.view.AlertDialogs;
 import com.foobnix.pdf.info.view.Dialogs;
 import com.foobnix.pdf.info.view.MyPopupMenu;
@@ -456,7 +459,7 @@ public class BrowseFragment2 extends UIFragment<FileMeta> {
 
                                 @Override
                                 public void run() {
-                                    displayAnyPath(Clouds.PREFIX_CLOUD_DROPBOX + "/");
+                                    displayAnyPath(Dropbox.PREFIX_PROVIDER + "/");
                                 }
                             });
 
@@ -472,7 +475,7 @@ public class BrowseFragment2 extends UIFragment<FileMeta> {
 
                                 @Override
                                 public void run() {
-                                    displayAnyPath(Clouds.PREFIX_CLOUD_GDRIVE + "/");
+                                    displayAnyPath(GDrive.PREFIX_PROVIDER + "/");
                                 }
                             });
 
@@ -488,7 +491,7 @@ public class BrowseFragment2 extends UIFragment<FileMeta> {
 
                                 @Override
                                 public void run() {
-                                    displayAnyPath(Clouds.PREFIX_CLOUD_ONEDRIVE + "/");
+                                    displayAnyPath(OneDrive.PREFIX_PROVIDER + "/");
                                 }
                             });
 
@@ -745,7 +748,7 @@ public class BrowseFragment2 extends UIFragment<FileMeta> {
 
         try {
 
-            if (displayPath.startsWith(Clouds.PREFIX_CLOUD)) {
+            if (Clouds.isCloud(displayPath)) {
                 cloudStorage = Clouds.get().cloud(displayPath);
                 String cloudPath = Clouds.getPath(displayPath);
                 if (TxtUtils.isEmpty(cloudPath)) {

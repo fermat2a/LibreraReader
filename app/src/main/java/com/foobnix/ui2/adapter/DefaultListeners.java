@@ -118,7 +118,7 @@ public class DefaultListeners {
 
                 boolean isFolder = AppDB.get().isFolder(result);
 
-                if (!isFolder && result.getPath().startsWith(Clouds.PREFIX_CLOUD)) {
+                if (!isFolder && Clouds.isCloud(result.getPath())) {
 
                     Downloader.openOrDownload(a, result, new Runnable() {
 

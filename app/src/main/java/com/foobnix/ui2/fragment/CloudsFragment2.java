@@ -25,6 +25,9 @@ import com.foobnix.pdf.info.FileMetaComparators;
 import com.foobnix.pdf.info.R;
 import com.foobnix.pdf.info.TintUtil;
 import com.foobnix.pdf.info.model.BookCSS;
+import com.foobnix.pdf.info.storage.Dropbox;
+import com.foobnix.pdf.info.storage.GDrive;
+import com.foobnix.pdf.info.storage.OneDrive;
 import com.foobnix.pdf.info.view.MyPopupMenu;
 import com.foobnix.pdf.info.wrapper.PopupHelper;
 import com.foobnix.pdf.info.wrapper.UITab;
@@ -137,7 +140,7 @@ public class CloudsFragment2 extends UIFragment<FileMeta> {
                                     .putExtra(MainTabs2.EXTRA_PAGE_NUMBER, UITab.getCurrentTabIndex(UITab.BrowseFragment));//
                             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
-                            EventBus.getDefault().post(new OpenDirMessage(Clouds.PREFIX_CLOUD_DROPBOX + "/"));
+                            EventBus.getDefault().post(new OpenDirMessage(Dropbox.PREFIX_PROVIDER + "/"));
                         } else {
                             Toast.makeText(getActivity(), R.string.success, Toast.LENGTH_SHORT).show();
                             BooksService.startForeground(getActivity(), BooksService.ACTION_SYNC_DROPBOX);
@@ -168,7 +171,7 @@ public class CloudsFragment2 extends UIFragment<FileMeta> {
                                     .putExtra(MainTabs2.EXTRA_PAGE_NUMBER, UITab.getCurrentTabIndex(UITab.BrowseFragment));//
                             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
-                            EventBus.getDefault().post(new OpenDirMessage(Clouds.PREFIX_CLOUD_GDRIVE + "/"));
+                            EventBus.getDefault().post(new OpenDirMessage(GDrive.PREFIX_PROVIDER + "/"));
 
                         } else {
                             MyProgressBar.setVisibility(View.VISIBLE);
@@ -196,7 +199,7 @@ public class CloudsFragment2 extends UIFragment<FileMeta> {
                                     .putExtra(MainTabs2.EXTRA_PAGE_NUMBER, UITab.getCurrentTabIndex(UITab.BrowseFragment));//
                             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
 
-                            EventBus.getDefault().post(new OpenDirMessage(Clouds.PREFIX_CLOUD_ONEDRIVE + "/"));
+                            EventBus.getDefault().post(new OpenDirMessage(OneDrive.PREFIX_PROVIDER + "/"));
 
                         } else {
                             MyProgressBar.setVisibility(View.VISIBLE);
@@ -291,19 +294,19 @@ public class CloudsFragment2 extends UIFragment<FileMeta> {
         if (Clouds.get().isDropbox()) {
             String title = getActivity().getString(R.string.dropbox) + " (" + Clouds.get().dropboxSpace + ")";
             res.add(metaTitle(title));
-            res.addAll(getCloudFiles(BookCSS.get().syncDropboxPath, Clouds.PREFIX_CLOUD_DROPBOX + Clouds.LIBRERA_SYNC_ONLINE_FOLDER));
+            res.addAll(getCloudFiles(BookCSS.get().syncDropboxPath, Dropbox.PREFIX_PROVIDER + Clouds.LIBRERA_SYNC_ONLINE_FOLDER));
         }
 
         if (Clouds.get().isGoogleDrive()) {
             String title = getActivity().getString(R.string.google_drive) + " (" + Clouds.get().googleSpace + ")";
             res.add(metaTitle(title));
-            res.addAll(getCloudFiles(BookCSS.get().syncGdrivePath, Clouds.PREFIX_CLOUD_GDRIVE + Clouds.LIBRERA_SYNC_ONLINE_FOLDER));
+            res.addAll(getCloudFiles(BookCSS.get().syncGdrivePath, GDrive.PREFIX_PROVIDER + Clouds.LIBRERA_SYNC_ONLINE_FOLDER));
         }
 
         if (Clouds.get().isOneDrive()) {
             String title = getActivity().getString(R.string.one_drive) + " (" + Clouds.get().oneDriveSpace + ")";
             res.add(metaTitle(title));
-            res.addAll(getCloudFiles(BookCSS.get().syncOneDrivePath, Clouds.PREFIX_CLOUD_ONEDRIVE + Clouds.LIBRERA_SYNC_ONLINE_FOLDER));
+            res.addAll(getCloudFiles(BookCSS.get().syncOneDrivePath, OneDrive.PREFIX_PROVIDER + Clouds.LIBRERA_SYNC_ONLINE_FOLDER));
         }
 
         LOG.d("prepareDataInBackground");

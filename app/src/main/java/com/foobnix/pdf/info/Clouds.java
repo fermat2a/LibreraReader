@@ -22,6 +22,7 @@ import com.foobnix.ext.CacheZipUtils;
 import com.foobnix.model.AppBook;
 import com.foobnix.model.AppProfile;
 import com.foobnix.pdf.info.model.BookCSS;
+import com.foobnix.pdf.info.storage.CloudProvider;
 import com.foobnix.pdf.info.wrapper.UITab;
 import com.foobnix.pdf.search.activity.msg.MessageSyncUpdateList;
 import com.foobnix.pdf.search.view.AsyncProgressTask;
@@ -36,15 +37,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Vector;
 
 public class Clouds {
 
     private static final String TOKEN_EMPTY = "[{}]";
     public static final String LIBRERA_SYNC_ONLINE_FOLDER = "/Librera.Cloud";
     public static final String PREFIX_CLOUD = "cloud-";
-    public static final String PREFIX_CLOUD_DROPBOX = PREFIX_CLOUD + "dropbox:";
-    public static final String PREFIX_CLOUD_GDRIVE = PREFIX_CLOUD + "gdrive:";
-    public static final String PREFIX_CLOUD_ONEDRIVE = PREFIX_CLOUD + "onedrive:";
+    public static final String PREFIX_CLOUD_DROPBOX = CloudProvider.PREFIX_CLOUD + "dropbox:";
+    public static final String PREFIX_CLOUD_GDRIVE = CloudProvider.PREFIX_CLOUD + "gdrive:";
+    public static final String PREFIX_CLOUD_ONEDRIVE = CloudProvider.PREFIX_CLOUD + "onedrive:";
 
     private static final Clouds instance = new Clouds();
 
@@ -53,6 +55,7 @@ public class Clouds {
     transient volatile public CloudStorage dropbox;
     transient volatile public CloudStorage googleDrive;
     transient volatile public CloudStorage oneDrive;
+    transient volatile private Vector<CloudProvider> StorageProviders;
 
     public volatile String dropboxToken;
     public volatile String googleDriveToken;
@@ -86,14 +89,14 @@ public class Clouds {
     }
 
     public static boolean isCloudFile(String path) {
-        return path.startsWith(Clouds.PREFIX_CLOUD) && path.lastIndexOf('.') > (path.length() - 6);
+        return path.startsWith(CloudProvider.PREFIX_CLOUD) && path.lastIndexOf('.') > (path.length() - 6);
     }
     public static boolean isCloudDir(String path) {
-        return path.startsWith(Clouds.PREFIX_CLOUD) && !isCloudFile(path);
+        return path.startsWith(CloudProvider.PREFIX_CLOUD) && !isCloudFile(path);
     }
 
     public static boolean isCloud(String path) {
-        return path.startsWith(PREFIX_CLOUD);
+        return path.startsWith(CloudProvider.PREFIX_CLOUD);
     }
 
     public static boolean isCloudImage(String path) {
@@ -106,7 +109,7 @@ public class Clouds {
 
     public static File getCacheFile(String path) {
 
-        if (!path.startsWith(PREFIX_CLOUD)) {
+        if (!path.startsWith(CloudProvider.PREFIX_CLOUD)) {
             return null;
         }
 

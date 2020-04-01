@@ -574,7 +574,7 @@ public class ImageExtractor {
                 return messageFile("", display);
             }
 
-            if (path.startsWith(Clouds.PREFIX_CLOUD)) {
+            if (Clouds.isCloud(path)) {
                 if (!Clouds.isCacheFileExist(path)) {
                     String display = ExtUtils.getFileName(path);
                     return messageFile("", display);
